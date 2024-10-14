@@ -1,0 +1,315 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: OrderScreen(),
+    );
+  }
+}
+
+class OrderScreen extends StatelessWidget {
+  OrderScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'สั่งซื้อสินค้า',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+        backgroundColor: Colors.green,
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AddressSection(),
+            const SizedBox(height: 20),
+            const ProductList(),
+            const Spacer(), // เพิ่ม Spacer เพื่อวางค่าส่งและปุ่มไว้ล่างจอ
+            const PriceSummary(), // ย้าย PriceSummary ไปไว้ที่นี่
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AddressSection extends StatelessWidget {
+  const AddressSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('ที่อยู่จัดส่ง',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(Icons.location_pin, color: Colors.green),
+              SizedBox(width: 10),
+              Expanded(child: Text('ม.1 ต.เมือง จ.อุดรดิตถ์')),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(Icons.person, color: Colors.green),
+              SizedBox(width: 10),
+              Expanded(child: Text('ชื่อผู้รับสินค้า กิตติพล อินมูล')),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(Icons.phone, color: Colors.green),
+              SizedBox(width: 10),
+              Expanded(child: Text('เบอร์โทร 0000000000')),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProductList extends StatelessWidget {
+  const ProductList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.green.shade50,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.local_shipping, color: Colors.green),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text('สินค้าจัดส่งทันที',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                ProductItem(
+                  name: 'เครื่องดื่ม',
+                  price: '5.00 บาท',
+                  color: Colors.green.shade50,
+                ),
+                const SizedBox(height: 10),
+                ProductItem(
+                  name: 'นม',
+                  price: '5.00 บาท',
+                  color: Colors.green.shade100,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProductItem extends StatelessWidget {
+  final String name;
+  final String price;
+  final Color color;
+
+  const ProductItem(
+      {super.key,
+      required this.name,
+      required this.price,
+      required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: color,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Icon(Icons.shopping_bag, color: Colors.green),
+          ),
+          const SizedBox(width: 10),
+          Expanded(child: Text(name, style: TextStyle(fontSize: 16))),
+          Text(price, style: TextStyle(fontSize: 16)),
+        ],
+      ),
+    );
+  }
+}
+
+class PriceSummary extends StatelessWidget {
+  const PriceSummary({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.grey.shade100,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('ค่าส่ง', style: TextStyle(fontSize: 16)),
+              Text('5.00 บาท', style: TextStyle(fontSize: 16)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('รายการรวม', style: TextStyle(fontSize: 16)),
+              Text('10.00 บาท', style: TextStyle(fontSize: 16)),
+            ],
+          ),
+          const SizedBox(height: 16), // เว้นระยะก่อนปุ่ม
+          OrderButton(), // ย้ายปุ่ม "ถัดไป" มาที่นี่
+        ],
+      ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({super.key});
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  double _scale = 1.0;
+  Color _color = Colors.green;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTapDown: (_) {
+          setState(() {
+            _scale = 0.9;
+            _color = Colors.greenAccent;
+          });
+        },
+        onTapUp: (_) {
+          setState(() {
+            _scale = 1.0;
+            _color = Colors.green;
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            _scale = 1.0;
+            _color = Colors.green;
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+          transform: Matrix4.identity()..scale(_scale),
+          decoration: BoxDecoration(
+            color: _color,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              minimumSize: const Size(150, 50),
+              elevation: 0,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('ยืนยันการสั่งซื้อ'),
+                    content: const Text('คุณต้องการสั่งซื้อสินค้านี้หรือไม่?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('ยกเลิก'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('สั่งซื้อสำเร็จ!')),
+                          );
+                        },
+                        child: const Text('ยืนยัน'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: const Text('ถัดไป', style: TextStyle(fontSize: 18)),
+          ),
+        ),
+      ),
+    );
+  }
+}
